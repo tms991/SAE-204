@@ -33,7 +33,111 @@
       min-height: 100vh;
     }
 
-    /* NAV */
+    /* ── LOGIN SCREEN ── */
+    #login-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+    #login-screen.hidden { display: none; }
+
+    .login-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 2.5rem 2rem 2rem;
+      width: 100%;
+      max-width: 360px;
+      box-shadow: 0 4px 24px rgba(0,0,0,.07);
+      display: flex;
+      flex-direction: column;
+      gap: 1.4rem;
+    }
+
+    .login-header {
+      display: flex;
+      flex-direction: column;
+      gap: .35rem;
+    }
+
+    .login-title {
+      font-family: var(--serif);
+      font-size: 1.5rem;
+      font-weight: 400;
+      color: var(--text);
+    }
+
+    .login-sub {
+      font-size: .8rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .login-field {
+      display: flex;
+      flex-direction: column;
+      gap: .4rem;
+    }
+
+    .login-field label {
+      font-size: .7rem;
+      font-weight: 500;
+      color: var(--muted);
+      letter-spacing: .07em;
+      text-transform: uppercase;
+    }
+
+    .login-field input {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: .9rem;
+      padding: .7rem 1rem;
+      border-radius: 6px;
+      outline: none;
+      transition: border-color .15s;
+      width: 100%;
+    }
+    .login-field input:focus { border-color: var(--accent); }
+    .login-field input.error { border-color: var(--danger); }
+
+    .login-error {
+      font-size: .78rem;
+      color: var(--danger);
+      min-height: 1em;
+      transition: opacity .2s;
+    }
+    .login-error:empty { opacity: 0; }
+
+    .btn-login {
+      width: 100%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      font-family: var(--sans);
+      font-size: .875rem;
+      font-weight: 500;
+      padding: .75rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: opacity .15s;
+    }
+    .btn-login:hover { opacity: .85; }
+
+    .login-note {
+      font-size: .72rem;
+      color: var(--muted2);
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    /* ── NAV ── */
     nav {
       position: fixed;
       top: 0; left: 0; right: 0;
@@ -53,7 +157,6 @@
       text-decoration: none;
       transition: color .15s;
     }
-
     .nav-link:hover { color: var(--text); }
     .nav-link.active {
       color: var(--text);
@@ -61,14 +164,41 @@
       padding-bottom: 1px;
     }
 
-    /* LAYOUT */
+    .nav-spacer { flex: 1; }
+
+    .nav-session {
+      display: flex;
+      align-items: center;
+      gap: .8rem;
+    }
+
+    .nav-user {
+      font-size: .75rem;
+      color: var(--muted);
+    }
+    .nav-user strong { color: var(--accent); }
+
+    .btn-logout {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-family: var(--sans);
+      font-size: .75rem;
+      padding: .28rem .75rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all .15s;
+    }
+    .btn-logout:hover { border-color: var(--border2); color: var(--text); }
+
+    /* ── LAYOUT ── */
     .layout {
       display: flex;
       padding-top: 53px;
       min-height: 100vh;
     }
 
-    /* SIDEBAR */
+    /* ── SIDEBAR ── */
     .sidebar {
       position: fixed;
       top: 53px; left: 0; bottom: 0;
@@ -108,6 +238,11 @@
       transition: opacity .15s;
     }
     .btn-add:hover { opacity: .85; }
+    .btn-add:disabled {
+      background: var(--border2);
+      cursor: default;
+      opacity: 1;
+    }
 
     .sidebar-list {
       flex: 1;
@@ -159,7 +294,7 @@
       line-height: 1.6;
     }
 
-    /* MAIN */
+    /* ── MAIN ── */
     .main {
       margin-left: 220px;
       flex: 1;
@@ -175,7 +310,7 @@
       padding: 0 2rem;
     }
 
-    /* SOMMAIRE */
+    /* ── SOMMAIRE ── */
     .sommaire {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -226,7 +361,7 @@
       margin-left: .25rem;
     }
 
-    /* EMPTY STATE */
+    /* ── EMPTY STATE ── */
     .empty-state {
       padding: 4rem 0;
       color: var(--muted);
@@ -234,17 +369,15 @@
       text-align: center;
     }
 
-    /* SEPARATEUR */
+    /* ── SEPARATEUR ── */
     .prog-separator {
       border: none;
       border-top: 1px solid var(--border);
       margin: 2.5rem 0;
     }
 
-    /* PROGRAMME */
-    .programme {
-      scroll-margin-top: 80px;
-    }
+    /* ── PROGRAMME ── */
+    .programme { scroll-margin-top: 80px; }
 
     .prog-intro {
       font-size: .9rem;
@@ -302,7 +435,7 @@
     .btn-sm:hover { border-color: var(--border2); color: var(--text); }
     .btn-sm.danger:hover { border-color: var(--danger); color: var(--danger); background: var(--danger-bg); }
 
-    /* CODE BLOCK */
+    /* ── CODE BLOCK ── */
     .code-wrap {
       background: var(--code-bg);
       border: 1px solid var(--border);
@@ -331,11 +464,7 @@
     .btn-copy:hover { color: var(--text); border-color: var(--text); }
     .btn-copy.copied { color: var(--accent); border-color: var(--accent); }
 
-    pre {
-      margin: 0;
-      padding: 1.25rem 1.5rem;
-      overflow-x: auto;
-    }
+    pre { margin: 0; padding: 1.25rem 1.5rem; overflow-x: auto; }
 
     code {
       font-family: var(--mono);
@@ -344,7 +473,7 @@
       color: #2c2c28;
     }
 
-    /* MODALS */
+    /* ── MODALS ── */
     .overlay {
       position: fixed;
       inset: 0;
@@ -469,7 +598,7 @@
     }
     .btn-del:hover { opacity: .85; }
 
-    /* TOAST */
+    /* ── TOAST ── */
     .toast {
       position: fixed;
       bottom: 1.5rem; right: 1.5rem;
@@ -486,6 +615,14 @@
     }
     .toast.show { opacity: 1; transform: translateY(0); }
 
+    /* ── AUTH GUARDS ── */
+    .auth-only { display: none !important; }
+    body.logged-in .auth-only { display: initial !important; }
+    body.logged-in .btn-add { display: block; }
+    body:not(.logged-in) .btn-add { display: none; }
+    body:not(.logged-in) .sidebar-item-delete { display: none !important; }
+    body:not(.logged-in) .prog-actions { display: none; }
+
     @media (max-width: 700px) {
       .sidebar { display: none; }
       .main { margin-left: 0; }
@@ -494,9 +631,35 @@
 </head>
 <body>
 
+  <!-- ── ÉCRAN DE CONNEXION ── -->
+  <div id="login-screen">
+    <div class="login-card">
+      <div class="login-header">
+        <p class="login-title">SAE 204</p>
+        <p class="login-sub">Connecte-toi pour pouvoir ajouter, modifier ou supprimer des programmes.</p>
+      </div>
+      <div class="login-field">
+        <label for="login-pwd">Mot de passe du groupe</label>
+        <input id="login-pwd" type="password" placeholder="••••••••" autocomplete="current-password">
+      </div>
+      <p class="login-error" id="login-error"></p>
+      <button class="btn-login" onclick="tryLogin()">Se connecter</button>
+      <p class="login-note">Visiteurs : vous pouvez consulter la page sans vous connecter.</p>
+      <button class="btn-login" style="background:none;border:1px solid var(--border);color:var(--muted);font-weight:400;" onclick="skipLogin()">
+        Continuer sans se connecter
+      </button>
+    </div>
+  </div>
+
   <nav>
     <a class="nav-link" href="./index.html">Accueil</a>
     <a class="nav-link active" href="./programmes.html">Programmes</a>
+    <div class="nav-spacer"></div>
+    <div class="nav-session auth-only" style="display:flex !important">
+      <!-- shown only when logged in via JS -->
+      <span class="nav-user" id="nav-user-label"></span>
+      <button class="btn-logout" onclick="logout()">Déconnexion</button>
+    </div>
   </nav>
 
   <div class="layout">
@@ -582,6 +745,82 @@
   <div class="toast" id="toast"></div>
 
   <script>
+    // ══════════════════════════════════════════
+    //  AUTH — mot de passe hashé en SHA-256
+    //  Pour changer le mot de passe :
+    //    1. Va sur https://emn178.github.io/online-tools/sha256.html
+    //    2. Tape ton nouveau mot de passe
+    //    3. Remplace la valeur de PWD_HASH ci-dessous
+    //
+    //  Mot de passe actuel : sae204groupe
+    // ══════════════════════════════════════════
+    const PWD_HASH = '0fd2edb4ae57b484a4b9c8f9d9a9aecba63d46d6802c8415344f9224a4a9f830';
+    const SESSION_KEY = 'sae204_session';
+    let isLoggedIn = false;
+
+    async function sha256(str) {
+      const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+      return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+    }
+
+    async function tryLogin() {
+      const pwd = document.getElementById('login-pwd').value;
+      const errEl = document.getElementById('login-error');
+      const input = document.getElementById('login-pwd');
+
+      if (!pwd) { input.classList.add('error'); errEl.textContent = 'Entre le mot de passe.'; return; }
+
+      const hash = await sha256(pwd);
+      if (hash === PWD_HASH) {
+        sessionStorage.setItem(SESSION_KEY, '1');
+        setLoggedIn(true);
+        document.getElementById('login-screen').classList.add('hidden');
+        toast('Connecté ✓');
+      } else {
+        input.classList.add('error');
+        errEl.textContent = 'Mot de passe incorrect.';
+        setTimeout(() => { input.classList.remove('error'); errEl.textContent = ''; }, 2500);
+      }
+    }
+
+    function skipLogin() {
+      setLoggedIn(false);
+      document.getElementById('login-screen').classList.add('hidden');
+    }
+
+    function logout() {
+      sessionStorage.removeItem(SESSION_KEY);
+      setLoggedIn(false);
+      toast('Déconnecté');
+    }
+
+    function setLoggedIn(val) {
+      isLoggedIn = val;
+      if (val) {
+        document.body.classList.add('logged-in');
+        document.getElementById('nav-user-label').innerHTML = 'Connecté en tant que <strong>membre du groupe</strong>';
+        document.querySelector('.nav-session').style.display = 'flex';
+      } else {
+        document.body.classList.remove('logged-in');
+        document.querySelector('.nav-session').style.display = 'none';
+      }
+      render();
+    }
+
+    // Si déjà connecté dans cette session (rechargement de page)
+    if (sessionStorage.getItem(SESSION_KEY) === '1') {
+      setLoggedIn(true);
+      document.getElementById('login-screen').classList.add('hidden');
+    }
+
+    // Soumettre avec Entrée
+    document.getElementById('login-pwd').addEventListener('keydown', e => {
+      if (e.key === 'Enter') tryLogin();
+    });
+
+    // ══════════════════════════════════════════
+    //  DONNÉES
+    // ══════════════════════════════════════════
     const KEY = 'sae204_v2';
     let progs = (() => { try { return JSON.parse(localStorage.getItem(KEY)) || []; } catch { return []; } })();
     let editId = null, delId = null;
@@ -600,7 +839,7 @@
         : progs.map(p => `
           <div class="sidebar-item" onclick="scrollTo_('${p.id}')">
             <span class="sidebar-item-name">${esc(p.name)}</span>
-            <button class="sidebar-item-delete" onclick="askDel(event,'${p.id}')">✕</button>
+            ${isLoggedIn ? `<button class="sidebar-item-delete" onclick="askDel(event,'${p.id}')">✕</button>` : ''}
           </div>`).join('');
 
       // sommaire
@@ -635,10 +874,11 @@
               <span class="prog-name">${esc(p.name)}</span>
               <span class="prog-lang">${esc(p.lang)}</span>
             </div>
+            ${isLoggedIn ? `
             <div class="prog-actions">
               <button class="btn-sm" onclick="openEdit('${p.id}')">Modifier</button>
               <button class="btn-sm danger" onclick="askDel(event,'${p.id}')">Supprimer</button>
-            </div>
+            </div>` : ''}
           </div>
           ${p.desc ? `<p class="prog-intro">${esc(p.desc)}</p>` : ''}
           <div class="code-wrap">
@@ -654,30 +894,40 @@
       document.getElementById('p-'+id)?.scrollIntoView({ behavior:'smooth', block:'start' });
     }
 
+    function requireAuth(fn) {
+      if (!isLoggedIn) { toast('Connecte-toi d\'abord.'); return; }
+      fn();
+    }
+
     function openAdd() {
-      editId = null;
-      document.getElementById('form-title').textContent = 'Ajouter un programme';
-      ['f-name','f-desc','f-code'].forEach(id => document.getElementById(id).value = '');
-      document.getElementById('f-lang').value = 'Python';
-      document.getElementById('ov-form').classList.add('open');
-      setTimeout(() => document.getElementById('f-name').focus(), 120);
+      requireAuth(() => {
+        editId = null;
+        document.getElementById('form-title').textContent = 'Ajouter un programme';
+        ['f-name','f-desc','f-code'].forEach(id => document.getElementById(id).value = '');
+        document.getElementById('f-lang').value = 'Python';
+        document.getElementById('ov-form').classList.add('open');
+        setTimeout(() => document.getElementById('f-name').focus(), 120);
+      });
     }
 
     function openEdit(id) {
-      const p = progs.find(x => x.id === id);
-      if (!p) return;
-      editId = id;
-      document.getElementById('form-title').textContent = 'Modifier';
-      document.getElementById('f-name').value = p.name;
-      document.getElementById('f-lang').value = p.lang;
-      document.getElementById('f-desc').value = p.desc;
-      document.getElementById('f-code').value = p.code;
-      document.getElementById('ov-form').classList.add('open');
+      requireAuth(() => {
+        const p = progs.find(x => x.id === id);
+        if (!p) return;
+        editId = id;
+        document.getElementById('form-title').textContent = 'Modifier';
+        document.getElementById('f-name').value = p.name;
+        document.getElementById('f-lang').value = p.lang;
+        document.getElementById('f-desc').value = p.desc;
+        document.getElementById('f-code').value = p.code;
+        document.getElementById('ov-form').classList.add('open');
+      });
     }
 
     function closeForm() { document.getElementById('ov-form').classList.remove('open'); }
 
     function save() {
+      if (!isLoggedIn) return;
       const name = document.getElementById('f-name').value.trim();
       if (!name) { document.getElementById('f-name').focus(); return; }
       const data = {
@@ -699,6 +949,7 @@
 
     function askDel(e, id) {
       e.stopPropagation();
+      if (!isLoggedIn) return;
       delId = id;
       document.getElementById('del-name').textContent = progs.find(x => x.id === id)?.name || '';
       document.getElementById('ov-del').classList.add('open');
@@ -707,6 +958,7 @@
     function closeDel() { document.getElementById('ov-del').classList.remove('open'); delId = null; }
 
     function doDelete() {
+      if (!isLoggedIn) return;
       progs = progs.filter(x => x.id !== delId);
       save_storage(); render(); closeDel(); toast('Supprimé');
     }
