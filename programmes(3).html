@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SAE 204 — Programmes</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&family=DM+Serif+Display&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f7f5f0;
+      --surface: #ffffff;
+      --border: #e5e1d8;
+      --border2: #d0ccbf;
+      --text: #1a1a18;
+      --muted: #888680;
+      --muted2: #b5b2aa;
+      --accent: #2d6a4f;
+      --accent-bg: #eaf2ee;
+      --danger: #c0392b;
+      --danger-bg: #fdf0ef;
+      --code-bg: #f2f0eb;
+      --serif: 'DM Serif Display', serif;
+      --sans: 'DM Sans', sans-serif;
+      --mono: 'Courier New', monospace;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      min-height: 100vh;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      padding: 1.1rem 2.5rem;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-link {
+      font-size: .85rem;
+      font-weight: 500;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color .15s;
+    }
+
+    .nav-link:hover { color: var(--text); }
+    .nav-link.active {
+      color: var(--text);
+      border-bottom: 1.5px solid var(--accent);
+      padding-bottom: 1px;
+    }
+
+    /* LAYOUT */
+    .layout {
+      display: flex;
+      padding-top: 53px;
+      min-height: 100vh;
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      position: fixed;
+      top: 53px; left: 0; bottom: 0;
+      width: 220px;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+    }
+
+    .sidebar-header {
+      padding: 1.25rem 1rem 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .sidebar-label {
+      font-size: .68rem;
+      font-weight: 500;
+      color: var(--muted2);
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      margin-bottom: .8rem;
+    }
+
+    .btn-add {
+      width: 100%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      font-family: var(--sans);
+      font-size: .82rem;
+      font-weight: 500;
+      padding: .6rem 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: opacity .15s;
+    }
+    .btn-add:hover { opacity: .85; }
+
+    .sidebar-list {
+      flex: 1;
+      padding: .6rem .6rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .sidebar-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: .5rem .7rem;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background .15s;
+      gap: .4rem;
+    }
+    .sidebar-item:hover { background: var(--bg); }
+
+    .sidebar-item-name {
+      font-size: .82rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      flex: 1;
+    }
+
+    .sidebar-item-delete {
+      background: none;
+      border: none;
+      color: var(--muted2);
+      cursor: pointer;
+      font-size: .72rem;
+      padding: .15rem .3rem;
+      border-radius: 3px;
+      transition: all .15s;
+      flex-shrink: 0;
+      opacity: 0;
+    }
+    .sidebar-item:hover .sidebar-item-delete { opacity: 1; }
+    .sidebar-item-delete:hover { color: var(--danger); background: var(--danger-bg); }
+
+    .sidebar-empty {
+      padding: 1.25rem .7rem;
+      font-size: .8rem;
+      color: var(--muted2);
+      line-height: 1.6;
+    }
+
+    /* MAIN */
+    .main {
+      margin-left: 220px;
+      flex: 1;
+      padding: 3rem 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .content {
+      width: 100%;
+      max-width: 720px;
+      padding: 0 2rem;
+    }
+
+    /* SOMMAIRE */
+    .sommaire {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.5rem 2rem;
+      margin-bottom: 3rem;
+    }
+
+    .sommaire-title {
+      font-family: var(--serif);
+      font-size: 1.1rem;
+      font-weight: 400;
+      margin-bottom: 1rem;
+      color: var(--text);
+    }
+
+    .sommaire-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: .35rem;
+    }
+
+    .sommaire-list li {
+      display: flex;
+      align-items: baseline;
+      gap: .5rem;
+    }
+
+    .sommaire-num {
+      font-size: .75rem;
+      color: var(--muted2);
+      min-width: 1.5rem;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .sommaire-link {
+      font-size: .875rem;
+      color: var(--accent);
+      text-decoration: none;
+      transition: opacity .15s;
+    }
+    .sommaire-link:hover { opacity: .7; text-decoration: underline; }
+
+    .sommaire-lang {
+      font-size: .7rem;
+      color: var(--muted2);
+      margin-left: .25rem;
+    }
+
+    /* EMPTY STATE */
+    .empty-state {
+      padding: 4rem 0;
+      color: var(--muted);
+      font-size: .9rem;
+      text-align: center;
+    }
+
+    /* SEPARATEUR */
+    .prog-separator {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 2.5rem 0;
+    }
+
+    /* PROGRAMME */
+    .programme {
+      scroll-margin-top: 80px;
+    }
+
+    .prog-intro {
+      font-size: .9rem;
+      color: var(--muted);
+      line-height: 1.75;
+      margin-bottom: 1.25rem;
+      white-space: pre-wrap;
+    }
+
+    .prog-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      gap: 1rem;
+    }
+
+    .prog-title-row {
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+    }
+
+    .prog-name {
+      font-family: var(--serif);
+      font-size: 1.3rem;
+      font-weight: 400;
+    }
+
+    .prog-lang {
+      font-size: .7rem;
+      font-weight: 500;
+      color: var(--accent);
+      background: var(--accent-bg);
+      padding: .2rem .55rem;
+      border-radius: 3px;
+    }
+
+    .prog-actions {
+      display: flex;
+      gap: .4rem;
+    }
+
+    .btn-sm {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-family: var(--sans);
+      font-size: .75rem;
+      padding: .28rem .7rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all .15s;
+    }
+    .btn-sm:hover { border-color: var(--border2); color: var(--text); }
+    .btn-sm.danger:hover { border-color: var(--danger); color: var(--danger); background: var(--danger-bg); }
+
+    /* CODE BLOCK */
+    .code-wrap {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    .code-bar {
+      display: flex;
+      justify-content: flex-end;
+      padding: .4rem 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .btn-copy {
+      background: none;
+      border: 1px solid var(--border2);
+      color: var(--muted);
+      font-family: var(--sans);
+      font-size: .7rem;
+      padding: .22rem .65rem;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: all .15s;
+    }
+    .btn-copy:hover { color: var(--text); border-color: var(--text); }
+    .btn-copy.copied { color: var(--accent); border-color: var(--accent); }
+
+    pre {
+      margin: 0;
+      padding: 1.25rem 1.5rem;
+      overflow-x: auto;
+    }
+
+    code {
+      font-family: var(--mono);
+      font-size: .8rem;
+      line-height: 1.8;
+      color: #2c2c28;
+    }
+
+    /* MODALS */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.25);
+      z-index: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .2s;
+    }
+    .overlay.open { opacity: 1; pointer-events: all; }
+
+    .modal {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      width: 100%;
+      max-width: 600px;
+      max-height: 90vh;
+      overflow-y: auto;
+      transform: translateY(8px);
+      transition: transform .2s;
+      box-shadow: 0 8px 40px rgba(0,0,0,.1);
+    }
+    .overlay.open .modal { transform: translateY(0); }
+
+    .modal-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .modal-head h2 { font-size: 1rem; font-weight: 500; }
+
+    .btn-close {
+      background: none; border: none;
+      color: var(--muted); font-size: 1rem;
+      cursor: pointer; transition: color .15s;
+    }
+    .btn-close:hover { color: var(--text); }
+
+    .modal-body {
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.1rem;
+    }
+
+    .field { display: flex; flex-direction: column; gap: .4rem; }
+
+    label {
+      font-size: .72rem;
+      font-weight: 500;
+      color: var(--muted);
+      letter-spacing: .05em;
+      text-transform: uppercase;
+    }
+
+    input, select, textarea {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: .875rem;
+      padding: .65rem .9rem;
+      border-radius: 5px;
+      outline: none;
+      transition: border-color .15s;
+      resize: vertical;
+    }
+    input:focus, select:focus, textarea:focus { border-color: var(--accent); }
+
+    textarea { min-height: 90px; }
+    #f-code { font-family: var(--mono); font-size: .8rem; min-height: 180px; }
+
+    .modal-foot {
+      padding: 1rem 1.5rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: flex-end;
+      gap: .6rem;
+    }
+
+    .btn-cancel {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-family: var(--sans);
+      font-size: .82rem;
+      padding: .6rem 1.2rem;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all .15s;
+    }
+    .btn-cancel:hover { border-color: var(--border2); color: var(--text); }
+
+    .btn-save {
+      background: var(--accent);
+      border: none; color: #fff;
+      font-family: var(--sans);
+      font-size: .82rem; font-weight: 500;
+      padding: .6rem 1.4rem;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: opacity .15s;
+    }
+    .btn-save:hover { opacity: .85; }
+
+    .btn-del {
+      background: var(--danger);
+      border: none; color: #fff;
+      font-family: var(--sans);
+      font-size: .82rem; font-weight: 500;
+      padding: .6rem 1.2rem;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: opacity .15s;
+    }
+    .btn-del:hover { opacity: .85; }
+
+    /* TOAST */
+    .toast {
+      position: fixed;
+      bottom: 1.5rem; right: 1.5rem;
+      background: var(--text);
+      color: var(--bg);
+      font-size: .8rem;
+      padding: .6rem 1.2rem;
+      border-radius: 5px;
+      z-index: 1000;
+      opacity: 0;
+      transform: translateY(6px);
+      transition: all .25s;
+      pointer-events: none;
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 700px) {
+      .sidebar { display: none; }
+      .main { margin-left: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="nav-link" href="index.html">Accueil</a>
+    <a class="nav-link active" href="programmes.html">Programmes</a>
+  </nav>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <p class="sidebar-label">Liste</p>
+        <button class="btn-add" onclick="openAdd()">+ Ajouter</button>
+      </div>
+      <div class="sidebar-list" id="sidebar-list"></div>
+    </aside>
+
+    <main class="main">
+      <div class="content">
+        <div id="sommaire-block"></div>
+        <div id="empty-state" class="empty-state">Aucun programme pour l'instant.<br>Clique sur + Ajouter.</div>
+        <div id="prog-list"></div>
+      </div>
+    </main>
+  </div>
+
+  <!-- MODAL AJOUT/EDIT -->
+  <div class="overlay" id="ov-form" onclick="closeIfBg(event,'ov-form','closeForm')">
+    <div class="modal">
+      <div class="modal-head">
+        <h2 id="form-title">Ajouter un programme</h2>
+        <button class="btn-close" onclick="closeForm()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="field">
+          <label>Nom</label>
+          <input id="f-name" type="text" placeholder="ex : Tri à bulles">
+        </div>
+        <div class="field">
+          <label>Langage</label>
+          <select id="f-lang">
+            <option>Python</option>
+            <option>C</option>
+            <option>C++</option>
+            <option>Java</option>
+            <option>JavaScript</option>
+            <option>HTML</option>
+            <option>CSS</option>
+            <option>SQL</option>
+            <option>Bash</option>
+            <option>Autre</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Introduction (texte affiché au-dessus du code)</label>
+          <textarea id="f-desc" placeholder="Présente ce que fait ce programme, son fonctionnement..."></textarea>
+        </div>
+        <div class="field">
+          <label>Code</label>
+          <textarea id="f-code" placeholder="Colle ton code ici..."></textarea>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button class="btn-cancel" onclick="closeForm()">Annuler</button>
+        <button class="btn-save" onclick="save()">Enregistrer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL CONFIRM DELETE -->
+  <div class="overlay" id="ov-del" onclick="closeIfBg(event,'ov-del','closeDel')">
+    <div class="modal" style="max-width:420px">
+      <div class="modal-head">
+        <h2>Supprimer ?</h2>
+        <button class="btn-close" onclick="closeDel()">✕</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size:.875rem;color:var(--muted);line-height:1.6">
+          Supprimer <strong id="del-name" style="color:var(--text)"></strong> ? Cette action est irréversible.
+        </p>
+      </div>
+      <div class="modal-foot">
+        <button class="btn-cancel" onclick="closeDel()">Annuler</button>
+        <button class="btn-del" onclick="doDelete()">Supprimer</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const KEY = 'sae204_v2';
+    let progs = (() => { try { return JSON.parse(localStorage.getItem(KEY)) || []; } catch { return []; } })();
+    let editId = null, delId = null;
+
+    function save_storage() { localStorage.setItem(KEY, JSON.stringify(progs)); }
+
+    function esc(s) {
+      return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    function render() {
+      // sidebar
+      const sl = document.getElementById('sidebar-list');
+      sl.innerHTML = progs.length === 0
+        ? '<p class="sidebar-empty">Aucun programme.</p>'
+        : progs.map(p => `
+          <div class="sidebar-item" onclick="scrollTo_('${p.id}')">
+            <span class="sidebar-item-name">${esc(p.name)}</span>
+            <button class="sidebar-item-delete" onclick="askDel(event,'${p.id}')">✕</button>
+          </div>`).join('');
+
+      // sommaire
+      const sb = document.getElementById('sommaire-block');
+      if (progs.length > 0) {
+        sb.innerHTML = `
+          <div class="sommaire">
+            <p class="sommaire-title">Sommaire</p>
+            <ol class="sommaire-list">
+              ${progs.map((p, i) => `
+                <li>
+                  <span class="sommaire-num">${i + 1}.</span>
+                  <a class="sommaire-link" href="#p-${p.id}">${esc(p.name)}</a>
+                  <span class="sommaire-lang">${esc(p.lang)}</span>
+                </li>`).join('')}
+            </ol>
+          </div>`;
+      } else {
+        sb.innerHTML = '';
+      }
+
+      // main list
+      const empty = document.getElementById('empty-state');
+      const list = document.getElementById('prog-list');
+      empty.style.display = progs.length ? 'none' : 'block';
+
+      list.innerHTML = progs.map((p, i) => `
+        ${i > 0 ? '<hr class="prog-separator">' : ''}
+        <div class="programme" id="p-${p.id}">
+          <div class="prog-header">
+            <div class="prog-title-row">
+              <span class="prog-name">${esc(p.name)}</span>
+              <span class="prog-lang">${esc(p.lang)}</span>
+            </div>
+            <div class="prog-actions">
+              <button class="btn-sm" onclick="openEdit('${p.id}')">Modifier</button>
+              <button class="btn-sm danger" onclick="askDel(event,'${p.id}')">Supprimer</button>
+            </div>
+          </div>
+          ${p.desc ? `<p class="prog-intro">${esc(p.desc)}</p>` : ''}
+          <div class="code-wrap">
+            <div class="code-bar">
+              <button class="btn-copy" onclick="copy_('${p.id}',this)">Copier</button>
+            </div>
+            <pre><code id="c-${p.id}">${esc(p.code)}</code></pre>
+          </div>
+        </div>`).join('');
+    }
+
+    function scrollTo_(id) {
+      document.getElementById('p-'+id)?.scrollIntoView({ behavior:'smooth', block:'start' });
+    }
+
+    function openAdd() {
+      editId = null;
+      document.getElementById('form-title').textContent = 'Ajouter un programme';
+      ['f-name','f-desc','f-code'].forEach(id => document.getElementById(id).value = '');
+      document.getElementById('f-lang').value = 'Python';
+      document.getElementById('ov-form').classList.add('open');
+      setTimeout(() => document.getElementById('f-name').focus(), 120);
+    }
+
+    function openEdit(id) {
+      const p = progs.find(x => x.id === id);
+      if (!p) return;
+      editId = id;
+      document.getElementById('form-title').textContent = 'Modifier';
+      document.getElementById('f-name').value = p.name;
+      document.getElementById('f-lang').value = p.lang;
+      document.getElementById('f-desc').value = p.desc;
+      document.getElementById('f-code').value = p.code;
+      document.getElementById('ov-form').classList.add('open');
+    }
+
+    function closeForm() { document.getElementById('ov-form').classList.remove('open'); }
+
+    function save() {
+      const name = document.getElementById('f-name').value.trim();
+      if (!name) { document.getElementById('f-name').focus(); return; }
+      const data = {
+        name,
+        lang: document.getElementById('f-lang').value,
+        desc: document.getElementById('f-desc').value.trim(),
+        code: document.getElementById('f-code').value
+      };
+      if (editId) {
+        const i = progs.findIndex(x => x.id === editId);
+        progs[i] = { ...progs[i], ...data };
+        toast('Modifié');
+      } else {
+        progs.push({ id: Date.now().toString(), ...data });
+        toast('Ajouté');
+      }
+      save_storage(); render(); closeForm();
+    }
+
+    function askDel(e, id) {
+      e.stopPropagation();
+      delId = id;
+      document.getElementById('del-name').textContent = progs.find(x => x.id === id)?.name || '';
+      document.getElementById('ov-del').classList.add('open');
+    }
+
+    function closeDel() { document.getElementById('ov-del').classList.remove('open'); delId = null; }
+
+    function doDelete() {
+      progs = progs.filter(x => x.id !== delId);
+      save_storage(); render(); closeDel(); toast('Supprimé');
+    }
+
+    function copy_(id, btn) {
+      navigator.clipboard.writeText(document.getElementById('c-'+id).textContent).then(() => {
+        btn.textContent = 'Copié !';
+        btn.classList.add('copied');
+        setTimeout(() => { btn.textContent = 'Copier'; btn.classList.remove('copied'); }, 1800);
+      });
+    }
+
+    function closeIfBg(e, ovId, fn) {
+      if (e.target === document.getElementById(ovId)) window[fn]();
+    }
+
+    function toast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2000);
+    }
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') { closeForm(); closeDel(); }
+    });
+
+    render();
+  </script>
+
+</body>
+</html>
